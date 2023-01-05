@@ -16,13 +16,18 @@ app.post("/sign-up", (req, res) => {
 
 app.get("/tweets", (req, res) => {
   const page = req.query.page || 1;
+  const numTweets = tweets.length; //37
+  
+  const firstTweet = numTweets - page * 10 < 0 ? 0 : numTweets - page * 10;
+  const lastTweet =
+    numTweets - (page - 1) * 10 - 1 < 0 ? 0 : numTweets - (page - 1) * 10 - 1;
 
   if (isNaN(page) || page < 1) {
     res.status(400).send("Informe uma página válida!");
     return;
   }
 
-  const tweetsCurrentPage = tweets.slice(page * 10 - 10, page * 10 - 1);
+  const tweetsCurrentPage = tweets.slice(firstTweet, lastTweet);
   res.send(tweetsCurrentPage);
 });
 
@@ -38,7 +43,7 @@ app.post("/tweets", (req, res) => {
 
   tweet.username = userReq;
   tweet.avatar = user.avatar;
-  
+
   tweets.push(tweet);
   res.status(201).send("OK");
 });
