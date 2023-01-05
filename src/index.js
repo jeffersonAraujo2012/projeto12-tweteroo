@@ -26,6 +26,18 @@ app.post("/sign-up", (req, res) => {
   res.send("OK");
 });
 
+app.get("/tweets", (req, res) => {
+  const page = req.query.page || 1;
+
+  if (isNaN(page) || page < 1) {
+    res.status(400).send("Informe uma página válida!");
+    return;
+  }
+   
+  const tweetsCurrentPage = tweets.slice(page * 10 - 10, page * 10 - 1);
+  res.send(tweetsCurrentPage);
+});
+
 app.listen(5000, () => {
   console.log("servidor online");
 });
