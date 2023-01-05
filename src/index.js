@@ -10,6 +10,11 @@ const tweets = [];
 
 app.post("/sign-up", (req, res) => {
   const user = req.body;
+
+  if (!user.username || !user.avatar) {
+    res.status(400).send("Todos os campos são obrigatórios!");
+  }
+
   users.push(user);
   res.status(201).send("OK");
 });
@@ -17,7 +22,7 @@ app.post("/sign-up", (req, res) => {
 app.get("/tweets", (req, res) => {
   const page = req.query.page || 1;
   const numTweets = tweets.length; //37
-  
+
   const firstTweet = numTweets - page * 10 < 0 ? 0 : numTweets - page * 10;
   const lastTweet =
     numTweets - (page - 1) * 10 - 1 < 0 ? 0 : numTweets - (page - 1) * 10 - 1;
