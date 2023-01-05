@@ -65,11 +65,11 @@ app.post("/tweets", (req, res) => {
   res.status(201).send("OK");
 });
 
-app.get("/tweets/:username", (req,res) => {
+app.get("/tweets/:username", (req, res) => {
   const username = req.params.username;
-  const filtedTweets = tweets.filter(tweet => tweet.username === username);
+  const filtedTweets = tweets.filter((tweet) => tweet.username === username);
   res.send(filtedTweets);
-})
+});
 
 app.listen(5000, () => {
   console.log("servidor online");
