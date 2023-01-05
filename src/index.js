@@ -10,13 +10,12 @@ const tweets = [];
 
 app.post("/sign-up", (req, res) => {
   const user = req.body;
-  //
-  if (
-    !user.username ||
-    !user.avatar ||
-    typeof user.username !== "string" ||
-    typeof user.avatar !== "string"
-  ) {
+
+  if (typeof user.username !== "string" || typeof user.avatar !== "string") {
+    res.sendStatus(400);
+    return;
+  }
+  if (!user.username || !user.avatar) {
     res.status(400).send("Todos os campos são obrigatórios!");
     return;
   }
@@ -51,6 +50,9 @@ app.post("/tweets", (req, res) => {
     return;
   }
 
+  if (typeof tweet.tweet !== 'string') {
+   res.sendStatus(400); 
+  }
   if (!tweet.tweet) {
     res.status(400).send("Todos os campos são obrigatórios!");
     return;
@@ -59,7 +61,7 @@ app.post("/tweets", (req, res) => {
   tweet.username = userReq;
   tweet.avatar = user.avatar;
 
-  tweets.splice(0,0,tweet);
+  tweets.splice(0, 0, tweet);
   res.status(201).send("OK");
 });
 
