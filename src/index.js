@@ -33,9 +33,26 @@ app.get("/tweets", (req, res) => {
     res.status(400).send("Informe uma página válida!");
     return;
   }
-   
+
   const tweetsCurrentPage = tweets.slice(page * 10 - 10, page * 10 - 1);
   res.send(tweetsCurrentPage);
+});
+
+app.post("/tweets", (req, res) => {
+  const userReq = req.headers.user;
+  const tweet = req.body;
+  const user = users.find((user) => user.username === userReq);
+
+  if (!user) {
+    res.status(403).send("UNAUTHORIZED");
+    return;
+  }
+
+  tweet.username = userReq;
+  tweet.avatar = user.avatar;
+  
+  tweets.push(tweet);
+  res.status(201).send("OK");
 });
 
 app.listen(5000, () => {
