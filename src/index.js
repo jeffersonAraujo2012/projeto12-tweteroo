@@ -50,8 +50,8 @@ app.post("/tweets", (req, res) => {
     return;
   }
 
-  if (typeof tweet.tweet !== 'string') {
-   res.sendStatus(400); 
+  if (typeof tweet.tweet !== "string") {
+    res.sendStatus(400);
   }
   if (!tweet.tweet) {
     res.status(400).send("Todos os campos são obrigatórios!");
@@ -64,6 +64,12 @@ app.post("/tweets", (req, res) => {
   tweets.splice(0, 0, tweet);
   res.status(201).send("OK");
 });
+
+app.get("/tweets/:username", (req,res) => {
+  const username = req.params.username;
+  const filtedTweets = tweets.filter(tweet => tweet.username === username);
+  res.send(filtedTweets);
+})
 
 app.listen(5000, () => {
   console.log("servidor online");
